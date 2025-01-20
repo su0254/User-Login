@@ -26,6 +26,8 @@ const avatar = () => {
     }
 
     const userContext = useContext(Themeuser)
+    console.log(userContext);
+    
     const name: string = userContext.user.lastName ? userContext.user.lastName : ''
     const latter: string = userContext.user.firstName ? userContext.user.firstName : ''
 

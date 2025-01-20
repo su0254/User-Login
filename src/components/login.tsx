@@ -34,9 +34,7 @@ export default function login() {
 
     const saveUser = async (e: React.FormEvent) => {
         e.preventDefault()
-        handleClose();
         const url = "http://localhost:3000/api/user/"
-
         try {
             const res = await axios.post(`${url}${click}`,
                 {
@@ -44,24 +42,26 @@ export default function login() {
                     password: passwordRef.current?.value
                 }
             )
-            console.log(res);
-
+            
             userDispatch(
                 {
                     type: 'ADD_USER',
-                    data: {
-                        id: res.data.user.id,
-                        email: res.data.user.email,
-                        password: res.data.user.password
+                    data: click==="login"?{
+                            ...res.data.user
+                    }: {
+                        id: res.data.userId,
+                        email: emailRef.current?.value,
+                        password: passwordRef.current?.value
                     }
                 }
             )
-            console.log("login " + user);
             setIsLogin(true)
+            handleClose();
         }
         catch (e: AxiosError | any) {
             if (e.response?.status === 422)
                 alert(e.response.data.message);
+            // console.log(e)
             else if (!e.response.ok) {
                 throw new Error(e.response.status + "" + e.response.data.message);
             }
